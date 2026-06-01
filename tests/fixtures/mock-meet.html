@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+  Mock Google Meet page for E2E testing.
+  Simulates participant video tiles with data-participant-id attributes.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mock Google Meet</title>
+  <style>
+    body { margin: 0; background: #1a1a2e; display: flex; gap: 16px; padding: 16px; }
+    .tile {
+      width: 320px;
+      height: 240px;
+      background: #16213e;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    video { width: 100%; height: 100%; object-fit: cover; }
+    .name { position: absolute; bottom: 8px; left: 8px; color: white; font-family: sans-serif; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <!-- Participant 1 -->
+  <div data-participant-id="participant-001" class="tile">
+    <video id="video-001" autoplay playsinline muted></video>
+    <div class="name" data-display-name="Alice Chen">Alice Chen</div>
+  </div>
+
+  <!-- Participant 2 -->
+  <div data-participant-id="participant-002" class="tile">
+    <video id="video-002" autoplay playsinline muted></video>
+    <div class="name" data-display-name="Bob Smith">Bob Smith</div>
+  </div>
+
+  <script>
+    // Create synthetic video streams using Canvas
+    function createSyntheticStream(videoEl, hue) {
+      const canvas = document.createElement('canvas');
+      canvas.width  = 320;
+      canvas.height = 240;
+      const ctx = canvas.getContext('2d');
+
+      let frame = 0;
+      function draw() {
+        // Simulate a face with a coloured oval + animated noise
+        ctx.fillStyle = `hsl(${hue}, 30%, 20%)`;
+        ctx.fillRect(0, 0, 320, 240);
+
+        // Face oval
+        ctx.fillStyle = `hsl(${hue + 20}, 60%, 70%)`;
+        ctx.beginPath();
+        ctx.ellipse(160, 110, 60, 80, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eyes
+        ctx.fillStyle = '#222';
+        ctx.beginPath();
+        ctx.arc(140, 95, 8, 0, Math.PI * 2);
+        ctx.arc(180, 95, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Animated mouth (open/close)
+        const openAmount = (Math.sin(frame * 0.1) + 1) * 6;
+        ctx.fillStyle = '#8b1a1a';
+        ctx.beginPath();
+        ctx.ellipse(160, 135, 20, openAmount, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        frame++;
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      const stream = canvas.captureStream(30);
+      videoEl.srcObject = stream;
+      videoEl.play();
+    }
+
+    createSyntheticStream(document.getElementById('video-001'), 200);
+    createSyntheticStream(document.getElementById('video-002'), 30);
+  </script>
+</body>
+</html>

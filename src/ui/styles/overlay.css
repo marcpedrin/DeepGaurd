@@ -1,0 +1,11 @@
+/**
+ * DeepGuard — Content Script CSS entry
+ * (Tailwind base styles for content script injection via manifest.json css field)
+ * Note: The actual overlay styles are injected inline via Shadow DOM in overlay-manager.ts.
+ * This file is a minimal reset to prevent Meet's global styles from leaking into our overlays.
+ */
+
+.deepguard-overlay-root {
+  all: initial;
+  font-family: 'Inter', system-ui, sans-serif;
+}
