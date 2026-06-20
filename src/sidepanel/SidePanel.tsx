@@ -5,8 +5,8 @@
  * settings toggles, and export button.
  */
 
-import React, { useEffect, useState, useCallback } from 'react';
-import type { TrustReport, ParticipantStatus, SessionReport, DeepGuardSettings } from '../shared/types';
+import { useEffect, useState, useCallback } from 'react';
+import type { TrustReport, ParticipantStatus, DeepGuardSettings } from '../shared/types';
 import { DEFAULT_SETTINGS } from '../shared/types';
 
 interface LiveData {
@@ -111,7 +111,6 @@ export function SidePanel() {
                 return (
                   <ParticipantCard
                     key={id}
-                    participantId={id}
                     displayName={displayName}
                     report={report}
                   />
@@ -225,11 +224,9 @@ export function SidePanel() {
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function ParticipantCard({
-  participantId,
   displayName,
   report,
 }: {
-  participantId: string;
   displayName: string;
   report: TrustReport | null;
 }) {

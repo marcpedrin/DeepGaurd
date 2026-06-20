@@ -6,7 +6,7 @@
  * sub-score details.
  */
 
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import type { Participant, TrustReport, ParticipantStatus } from '../../shared/types';
 import { RadialGauge } from './RadialGauge';
 import { ScoreBar } from './ScoreBar';

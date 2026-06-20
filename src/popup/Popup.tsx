@@ -42,12 +42,15 @@ export function Popup() {
         // Fetch latest reports
         const reportsResp = await chrome.tabs.sendMessage(tab!.id!, { type: 'GET_ALL_REPORTS' });
         if (reportsResp?.payload) {
-          const { reports, participants: parts } = reportsResp.payload;
+          const { reports, participants: parts } = reportsResp.payload as {
+            reports: Record<string, TrustReport>;
+            participants: Record<string, { displayName: string }>;
+          };
           const summaries: ParticipantSummary[] = Object.entries(parts).map(
-            ([id, { displayName }]: [string, { displayName: string }]) => ({
+            ([id, { displayName }]) => ({
               participantId: id,
               displayName,
-              report: (reports as Record<string, TrustReport>)[id] ?? null,
+              report: reports[id] ?? null,
             })
           );
           setParticipants(summaries);

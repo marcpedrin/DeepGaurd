@@ -9,7 +9,7 @@ import { describe, it, expect, vi, beforeAll } from 'vitest';
 vi.mock('@mediapipe/tasks-vision', () => {
   const FaceLandmarker = {
     createFromOptions: vi.fn().mockResolvedValue({
-      detect: vi.fn().mockImplementation((imageData: ImageData) => ({
+      detect: vi.fn().mockImplementation((_imageData: ImageData) => ({
         faceLandmarks: [
           // 478 normalised landmarks
           Array.from({ length: 478 }, (_, i) => ({

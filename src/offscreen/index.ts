@@ -7,7 +7,7 @@
 
 import { InferenceEngine } from './inference-engine';
 import type { AnyMessage, AnalyzeFrameMessage, AudioLevelMessage } from '../shared/messaging';
-import type { SerializedFrameData } from '../shared/types';
+import type { SerializedFrameData, TrustReport } from '../shared/types';
 
 const engine = new InferenceEngine();
 
@@ -50,7 +50,7 @@ chrome.runtime.onMessage.addListener((message: AnyMessage, _sender, sendResponse
 
 // ─── Frame Analysis ───────────────────────────────────────────────────────────
 
-async function handleAnalyzeFrame(message: AnalyzeFrameMessage): Promise<void> {
+async function handleAnalyzeFrame(message: AnalyzeFrameMessage): Promise<TrustReport> {
   const frame = message.payload;
   const imageData = deserializeFrame(frame);
 
@@ -65,6 +65,8 @@ async function handleAnalyzeFrame(message: AnalyzeFrameMessage): Promise<void> {
 
   // Send trust report back through background SW
   chrome.runtime.sendMessage({ type: 'TRUST_REPORT', payload: report });
+
+  return report;
 }
 
 function deserializeFrame(frame: SerializedFrameData): ImageData {

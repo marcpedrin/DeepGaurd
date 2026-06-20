@@ -35,7 +35,7 @@ describe('TemporalAnalyzer', () => {
   it('returns high consistency for stable natural motion (jitter 2–20 px)', () => {
     // Feed 3 frames with moderate natural jitter
     analyzer.analyze(PARTICIPANT, makeMesh(0, 5), makeImageData(), Date.now());
-    const r2 = analyzer.analyze(PARTICIPANT, makeMesh(3, 5), makeImageData(), Date.now() + 1000);
+    analyzer.analyze(PARTICIPANT, makeMesh(3, 5), makeImageData(), Date.now() + 1000);
     const r3 = analyzer.analyze(PARTICIPANT, makeMesh(6, 5), makeImageData(), Date.now() + 2000);
 
     expect(r3.temporalConsistency).toBeGreaterThan(0.6);

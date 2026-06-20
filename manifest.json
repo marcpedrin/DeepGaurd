@@ -21,14 +21,14 @@
     "https://meet.google.com/*"
   ],
   "background": {
-    "service_worker": "dist/background/service-worker.js",
+    "service_worker": "background/service-worker.js",
     "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
-      "js": ["dist/content/index.js"],
-      "css": ["dist/content/overlay.css"],
+      "js": ["content/index.js"],
+      "css": ["content/overlay.css"],
       "run_at": "document_idle"
     }
   ],
@@ -48,15 +48,15 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "dist/offscreen/index.js",
+        "offscreen/index.js",
         "offscreen/index.html",
         "models/*.onnx",
         "models/face_landmarker.task",
         "models/deepfake_classifier.json",
-        "dist/content/overlay.css",
+        "content/overlay.css",
         "*.wasm",
         "mediapipe/*",
-        "dist/shared/*.js"
+        "shared/*.js"
       ],
       "matches": ["https://meet.google.com/*", "chrome-extension://*/*"]
     }

@@ -11,8 +11,8 @@ const MOCK_MEET_URL  = `file://${path.resolve(__dirname, '../fixtures/mock-meet.
 
 // Launch browser with extension loaded
 test.use({
-  // Playwright Chrome with extension requires a persistent context
-  contextOptions: {
+  // Chrome extensions require launch-level flags; Playwright loads them via launchOptions
+  launchOptions: {
     args: [
       `--disable-extensions-except=${EXTENSION_PATH}`,
       `--load-extension=${EXTENSION_PATH}`,
@@ -81,7 +81,8 @@ test.describe('DeepGuard overlay — Mock Meet', () => {
   });
 });
 
-async function getExtensionId(context: Parameters<typeof test.use>[0]['contextOptions'] extends infer T ? never : never): Promise<string | null> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getExtensionId(context: any): Promise<string | null> {
   // @ts-ignore — accessing playwright internals
   const backgrounds = context.serviceWorkers();
   if (backgrounds.length > 0) {

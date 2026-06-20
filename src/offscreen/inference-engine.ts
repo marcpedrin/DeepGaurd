@@ -27,15 +27,12 @@ export class InferenceEngine {
   private trustScorer     = new TrustScorer();
   private frameCounters   = new Map<ParticipantId, number>();
 
-  private isInitialized = false;
-
   async initialize(): Promise<void> {
     console.log('[InferenceEngine] Initializing models...');
     await Promise.all([
       this.faceDetector.initialize(),
       this.classifier.initialize(),
     ]);
-    this.isInitialized = true;
     console.log('[InferenceEngine] All models loaded');
   }
 

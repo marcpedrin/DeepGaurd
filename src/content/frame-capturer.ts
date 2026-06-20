@@ -5,7 +5,7 @@
  * Uses OffscreenCanvas.drawImage() for zero-copy pixel extraction.
  */
 
-import { FRAME_INTERVAL_MS, MIN_VIDEO_DIMENSION } from '../shared/constants';
+import { MIN_VIDEO_DIMENSION } from '../shared/constants';
 import type { Participant, ParticipantId, SerializedFrameData } from '../shared/types';
 
 type FrameCallback = (frame: SerializedFrameData) => void;
@@ -78,7 +78,7 @@ export class FrameCapturer {
   setFps(fps: 1 | 2): void {
     this.intervalMs = Math.round(1000 / fps);
     // Restart all intervals
-    this.jobs.forEach((job, id) => {
+    this.jobs.forEach((job) => {
       clearInterval(job.intervalId);
       job.intervalId = setInterval(() => this.captureFrame(job), this.intervalMs);
     });

@@ -21,7 +21,6 @@ interface OverlayEntry {
 
 export class OverlayManager {
   private overlays = new Map<ParticipantId, OverlayEntry>();
-  private styleEl: HTMLStyleElement | null = null;
 
   addOverlay(participant: Participant): void {
     if (this.overlays.has(participant.id)) {

@@ -15,7 +15,6 @@ import { FrameCapturer } from './frame-capturer';
 import { AudioCapture } from './audio-capture';
 import { OverlayManager } from './overlay-manager';
 import type { Participant, ParticipantId, SerializedFrameData, DeepGuardSettings } from '../shared/types';
-import type { BackgroundToContentMessage } from '../shared/messaging';
 import { DEFAULT_SETTINGS } from '../shared/types';
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -184,7 +183,8 @@ function onAudioLevel(rms: number): void {
 // ─── Incoming Messages from Background ───────────────────────────────────────
 
 chrome.runtime.onMessage.addListener(
-  (message: BackgroundToContentMessage, _sender, sendResponse) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (message: any, _sender, sendResponse) => {
     switch (message.type) {
       case 'TRUST_REPORT': {
         overlayManager.updateReport(message.payload);
@@ -193,7 +193,7 @@ chrome.runtime.onMessage.addListener(
       }
 
       case 'SETTINGS_UPDATED': {
-        const newSettings = message.payload;
+        const newSettings = message.payload as DeepGuardSettings;
         const wasEnabled = settings.enabled;
 
         settings = newSettings;
@@ -222,9 +222,20 @@ chrome.runtime.onMessage.addListener(
       }
 
       case 'ANALYSIS_ERROR': {
-        console.warn('[DeepGuard Content] Analysis error:', message.payload.error);
+        console.warn('[DeepGuard Content] Analysis error:', message.payload?.error);
         sendResponse({ ok: true });
         break;
+      }
+
+      // ── Proxy requests from Popup / SidePanel to the background SW ──────
+      // Popup and SidePanel use chrome.tabs.sendMessage to reach the content
+      // script; we proxy these to the background service worker which holds state.
+      case 'GET_ALL_REPORTS':
+      case 'GET_SESSION_REPORT': {
+        chrome.runtime.sendMessage(message)
+          .then((resp) => sendResponse(resp))
+          .catch(() => sendResponse(null));
+        return true; // keep channel open for async response
       }
 
       default:

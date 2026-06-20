@@ -337,9 +337,9 @@ function computeSpectralArtifacts(coeffs: Float32Array): number {
   const powers = coeffs.map((c) => c * c);
   const totalPower = powers.reduce((a, b) => a + b, 0) + 1e-8;
 
-  // DC coefficient power ratio
+  // DC coefficient power ratio (high DC = too-uniform image)
   const dcPower = powers[0] ?? 0;
-  const dcRatio = dcPower / totalPower;
+  void (dcPower / totalPower); // computed for reference; spectral score uses AC distribution
 
   // Score: if DC dominates (> 0.999), the image is too uniform
   // If AC energy is distributed oddly (all in one frequency), suspicious

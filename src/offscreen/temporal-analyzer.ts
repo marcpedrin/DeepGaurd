@@ -174,7 +174,7 @@ export class TemporalAnalyzer {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function computeAverageLuminance(imageData: ImageData): number {
-  const { data, width, height } = imageData;
+  const { data } = imageData;
   let total = 0;
   const step = 4; // sample every pixel
   let count = 0;

@@ -2,6 +2,8 @@
  * Vitest test setup — mock Chrome APIs for unit/integration tests
  */
 
+import { vi } from 'vitest';
+
 // Mock chrome extension API
 const chromeStorage: Record<string, unknown> = {};
 

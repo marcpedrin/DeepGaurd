@@ -5,7 +5,7 @@
  * local audio RMS level for lip-sync analysis.
  */
 
-import { AUDIO_RMS_THRESHOLD } from '../shared/constants';
+// AUDIO_RMS_THRESHOLD is defined in constants but threshold logic is handled upstream
 
 export type AudioLevelCallback = (rms: number) => void;
 
@@ -16,7 +16,7 @@ export class AudioCapture {
   private source: MediaStreamAudioSourceNode | null = null;
   private pollInterval: ReturnType<typeof setInterval> | null = null;
   private onLevel: AudioLevelCallback;
-  private dataArray: Float32Array | null = null;
+  private dataArray: Float32Array<ArrayBuffer> | null = null;
 
   constructor(onLevel: AudioLevelCallback) {
     this.onLevel = onLevel;
@@ -37,7 +37,7 @@ export class AudioCapture {
       this.source = this.audioContext.createMediaStreamSource(this.stream);
       this.source.connect(this.analyser);
 
-      this.dataArray = new Float32Array(this.analyser.fftSize);
+      this.dataArray = new Float32Array(this.analyser.fftSize) as Float32Array<ArrayBuffer>;
 
       // Poll audio level at 10 Hz
       this.pollInterval = setInterval(() => this.measureLevel(), 100);

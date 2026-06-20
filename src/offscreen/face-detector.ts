@@ -36,11 +36,11 @@ let initPromise: Promise<void> | null = null;
 
 export class FaceDetector {
   private canvas: OffscreenCanvas;
-  private ctx: OffscreenCanvasRenderingContext2D;
 
   constructor() {
     this.canvas = new OffscreenCanvas(192, 192);
-    this.ctx = this.canvas.getContext('2d')!;
+    // ctx is used only transiently in detectWithMediaPipe — keep canvas for reuse
+    this.canvas.getContext('2d');
   }
 
   async initialize(): Promise<void> {
@@ -52,7 +52,7 @@ export class FaceDetector {
     await initPromise;
 
     console.log(
-      initState === 'ready'
+      (initState as string) === 'ready'
         ? '[FaceDetector] MediaPipe FaceLandmarker ready (478 landmarks)'
         : '[FaceDetector] MediaPipe unavailable — using heuristic fallback'
     );

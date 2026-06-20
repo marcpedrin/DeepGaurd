@@ -1,4 +1,4 @@
-import React from 'react';
+
 import type { ParticipantStatus } from '../../shared/types';
 
 interface StatusBadgeProps {
