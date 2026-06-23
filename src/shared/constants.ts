@@ -30,7 +30,7 @@ export const MAX_PARTICIPANTS = 10;
 export const TEMPORAL_BUFFER_SIZE = 8;      // number of frames to keep in buffer
 export const LOOP_DETECT_WINDOW = 6;        // compare frame N with frame N-6
 export const LOOP_SIMILARITY_THRESHOLD = 0.97; // cosine similarity threshold for loop
-export const SMOOTH_MOTION_THRESHOLD = 0.002;  // jitter below this = suspiciously smooth
+export const SMOOTH_MOTION_THRESHOLD = 1.0;   // jitter below this (px) = suspiciously smooth
 export const LIGHTING_DELTA_THRESHOLD = 50;    // pixel intensity delta for lighting change
 
 // ─── Trust Score Weights ──────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ export const LIP_SYNC_HISTORY_SIZE = 10;          // frames of history for sync 
 /** Variance of pixel intensity in face crop below which texture is deemed 'too uniform' */
 export const TEXTURE_VARIANCE_THRESHOLD = 400;
 /** Edge artifact detection: Laplacian gradient at face boundary */
-export const EDGE_ARTIFACT_GRADIENT_THRESHOLD = 30;
+export const EDGE_ARTIFACT_GRADIENT_THRESHOLD = 80;  // Sobel magnitude above which a face-edge pixel is flagged
 /** How many frames of static background before flagging */
 export const STATIC_BG_FRAME_THRESHOLD = 5;
 

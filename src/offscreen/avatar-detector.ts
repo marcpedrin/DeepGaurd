@@ -14,6 +14,7 @@ import {
   SMOOTH_MOTION_THRESHOLD,
   TEXTURE_VARIANCE_THRESHOLD,
   STATIC_BG_FRAME_THRESHOLD,
+  EDGE_ARTIFACT_GRADIENT_THRESHOLD,
 } from '../shared/constants';
 import type {
   AvatarDetectionResult,
@@ -153,7 +154,7 @@ export class AvatarDetector {
       const gy = this.sobelY(data, width, px, py);
       const magnitude = Math.sqrt(gx * gx + gy * gy);
 
-      if (magnitude > 80) highGradientCount++;
+      if (magnitude > EDGE_ARTIFACT_GRADIENT_THRESHOLD) highGradientCount++;
     }
 
     // Flag if more than 30% of outline points have high gradient (hard edge)

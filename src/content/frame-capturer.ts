@@ -129,7 +129,6 @@ export class FrameCapturer {
   private isVideoReady(video: HTMLVideoElement): boolean {
     return (
       video.readyState >= 2 &&
-      !video.paused &&
       video.videoWidth  >= MIN_VIDEO_DIMENSION &&
       video.videoHeight >= MIN_VIDEO_DIMENSION
     );

@@ -1,0 +1,14 @@
+{
+  "model_name": "deepfake_classifier",
+  "input_name": "pixel_values",
+  "output_name": "logits",
+  "label_map": {
+    "0": "Fake",
+    "1": "Real"
+  },
+  "normalization": {
+    "mean": [0.5, 0.5, 0.5],
+    "std": [0.5, 0.5, 0.5]
+  },
+  "note": "No ONNX model present. Extension uses DCT frequency-domain analysis as fallback."
+}
