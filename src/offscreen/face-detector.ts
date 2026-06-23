@@ -249,11 +249,19 @@ async function loadMediaPipe(): Promise<void> {
     const wasmBase = chrome.runtime.getURL('mediapipe/');
     const vision   = await FilesetResolver.forVisionTasks(wasmBase);
 
-    const modelPath = chrome.runtime.getURL('models/face_landmarker.task');
+    // Pre-fetch the model using the extension's own fetch() — the WASM layer
+    // inside MediaPipe cannot reliably fetch chrome-extension:// URLs itself.
+    // Passing modelAssetBuffer bypasses MediaPipe's internal fetch entirely.
+    const modelUrl    = chrome.runtime.getURL('models/face_landmarker.task');
+    const modelRes    = await fetch(modelUrl);
+    if (!modelRes.ok) {
+      throw new Error(`Failed to fetch face_landmarker.task: HTTP ${modelRes.status}`);
+    }
+    const modelBuffer = await modelRes.arrayBuffer();
 
     landmarker = await FaceLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: modelPath,
+        modelAssetBuffer: new Uint8Array(modelBuffer),
         delegate: 'CPU',  // GPU crashes in offscreen docs on some systems
       },
       numFaces:              1,
